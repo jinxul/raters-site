@@ -15,3 +15,5 @@ MESSAGE_SUCCESS = 'Success'
 MESSAGE_NOT_FOUND = 'Not Found'
 MESSAGE_SUCCESS_DB = 'The Database Has Been Updated Successfully'
 MESSAGE_UNSUPPORTED_METHOD = 'Unsupported Method'
+
+ITEM_PER_PAGE = 10

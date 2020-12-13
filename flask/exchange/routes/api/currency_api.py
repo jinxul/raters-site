@@ -48,3 +48,24 @@ def api_currency_by(code):
         return jsonify(message=constant.MESSAGE_SUCCESS, status=200, data=data)
 
     return jsonify(message=constant.MESSAGE_UNSUPPORTED_METHOD)
+
+
+@bp_currency_api.route('/currency/page/<int:page>', methods=['GET'])
+@limiter.limit("1000/day;100/minute")
+def api_currency_by_page(page):
+    if request.method == 'GET':
+
+        offset = 0 if page <= 1 else constant.ITEM_PER_PAGE * (page - 1)
+
+        currencies = Currency.query.offset(
+            offset).limit(constant.ITEM_PER_PAGE).all()
+
+        if not currencies:
+            return jsonify(message=constant.MESSAGE_NOT_FOUND, status=404)
+
+        dump = currencies_schema.dump(currencies)
+        data = map_from_entity_list(dump)
+
+        return jsonify(message=constant.MESSAGE_SUCCESS, status=200, totalResults=len(data), data=data)
+
+    return jsonify(message=constant.MESSAGE_UNSUPPORTED_METHOD)
